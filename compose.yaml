@@ -1,0 +1,11 @@
+services:
+  samsara-poller:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      OUTPUT_DIR: /data
+    volumes:
+      - ./data:/data
+    stop_grace_period: 30s

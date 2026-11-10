@@ -1,0 +1,292 @@
+{
+  "purpose": "Synthetic answer key. Keep separate from the datasets used to test matching.",
+  "ptiRows": 50,
+  "fleetRows": 50,
+  "sharedDrivers": 44,
+  "shared": [
+    {
+      "name": "Jordan Lee",
+      "ptiDriverId": "PTI-1023",
+      "appDriverUid": "FLT-4037"
+    },
+    {
+      "name": "Ana Rivera",
+      "ptiDriverId": "PTI-1046",
+      "appDriverUid": "FLT-4074"
+    },
+    {
+      "name": "Malik Kai Reyes",
+      "ptiDriverId": "PTI-1069",
+      "appDriverUid": "FLT-4111"
+    },
+    {
+      "name": "Sofia Parker",
+      "ptiDriverId": "PTI-1092",
+      "appDriverUid": "FLT-4011"
+    },
+    {
+      "name": "Darius Harris",
+      "ptiDriverId": "PTI-1014",
+      "appDriverUid": "FLT-4048"
+    },
+    {
+      "name": "Elena Lee Bennett",
+      "ptiDriverId": "PTI-1037",
+      "appDriverUid": "FLT-4085"
+    },
+    {
+      "name": "Noah Nguyen",
+      "ptiDriverId": "PTI-1060",
+      "appDriverUid": "FLT-4122"
+    },
+    {
+      "name": "Isabel Flores",
+      "ptiDriverId": "PTI-1083",
+      "appDriverUid": "FLT-4022"
+    },
+    {
+      "name": "Mateo James Brooks",
+      "ptiDriverId": "PTI-1005",
+      "appDriverUid": "FLT-4059"
+    },
+    {
+      "name": "Sam Clark",
+      "ptiDriverId": "PTI-1028",
+      "appDriverUid": "FLT-4096"
+    },
+    {
+      "name": "Priya Carter",
+      "ptiDriverId": "PTI-1051",
+      "appDriverUid": "FLT-4133"
+    },
+    {
+      "name": "Lucas Lynn Wright",
+      "ptiDriverId": "PTI-1074",
+      "appDriverUid": "FLT-4033"
+    },
+    {
+      "name": "Chris Johnson",
+      "ptiDriverId": "PTI-1097",
+      "appDriverUid": "FLT-4070"
+    },
+    {
+      "name": "Chris Johnson",
+      "ptiDriverId": "PTI-1019",
+      "appDriverUid": "FLT-4107"
+    },
+    {
+      "name": "Andre Noel Ruiz",
+      "ptiDriverId": "PTI-1042",
+      "appDriverUid": "FLT-4007"
+    },
+    {
+      "name": "Maya Patel",
+      "ptiDriverId": "PTI-1065",
+      "appDriverUid": "FLT-4044"
+    },
+    {
+      "name": "Jordan Wilson",
+      "ptiDriverId": "PTI-1088",
+      "appDriverUid": "FLT-4081"
+    },
+    {
+      "name": "Ana Marie Ortiz",
+      "ptiDriverId": "PTI-1010",
+      "appDriverUid": "FLT-4118"
+    },
+    {
+      "name": "Malik Davis",
+      "ptiDriverId": "PTI-1033",
+      "appDriverUid": "FLT-4018"
+    },
+    {
+      "name": "Sofia García",
+      "ptiDriverId": "PTI-1056",
+      "appDriverUid": "FLT-4055"
+    },
+    {
+      "name": "Darius Rae O’Connor",
+      "ptiDriverId": "PTI-1079",
+      "appDriverUid": "FLT-4092"
+    },
+    {
+      "name": "Elena Santos",
+      "ptiDriverId": "PTI-1001",
+      "appDriverUid": "FLT-4129"
+    },
+    {
+      "name": "Noah Mendoza",
+      "ptiDriverId": "PTI-1024",
+      "appDriverUid": "FLT-4029"
+    },
+    {
+      "name": "Isabel Jules Lee",
+      "ptiDriverId": "PTI-1047",
+      "appDriverUid": "FLT-4066"
+    },
+    {
+      "name": "Mateo Rivera",
+      "ptiDriverId": "PTI-1070",
+      "appDriverUid": "FLT-4103"
+    },
+    {
+      "name": "Sam Reyes",
+      "ptiDriverId": "PTI-1093",
+      "appDriverUid": "FLT-4003"
+    },
+    {
+      "name": "Priya Kai Parker",
+      "ptiDriverId": "PTI-1015",
+      "appDriverUid": "FLT-4040"
+    },
+    {
+      "name": "Lucas Harris",
+      "ptiDriverId": "PTI-1038",
+      "appDriverUid": "FLT-4077"
+    },
+    {
+      "name": "Chris Bennett",
+      "ptiDriverId": "PTI-1061",
+      "appDriverUid": "FLT-4114"
+    },
+    {
+      "name": "Rosa Lee Nguyen",
+      "ptiDriverId": "PTI-1084",
+      "appDriverUid": "FLT-4014"
+    },
+    {
+      "name": "Andre Flores",
+      "ptiDriverId": "PTI-1006",
+      "appDriverUid": "FLT-4051"
+    },
+    {
+      "name": "Maya Brooks",
+      "ptiDriverId": "PTI-1029",
+      "appDriverUid": "FLT-4088"
+    },
+    {
+      "name": "Jordan James Clark",
+      "ptiDriverId": "PTI-1052",
+      "appDriverUid": "FLT-4125"
+    },
+    {
+      "name": "Ana Carter",
+      "ptiDriverId": "PTI-1075",
+      "appDriverUid": "FLT-4025"
+    },
+    {
+      "name": "Malik Wright",
+      "ptiDriverId": "PTI-1098",
+      "appDriverUid": "FLT-4062"
+    },
+    {
+      "name": "Sofia Lynn Johnson",
+      "ptiDriverId": "PTI-1020",
+      "appDriverUid": "FLT-4099"
+    },
+    {
+      "name": "Darius Khan",
+      "ptiDriverId": "PTI-1043",
+      "appDriverUid": "FLT-4136"
+    },
+    {
+      "name": "Elena Ruiz",
+      "ptiDriverId": "PTI-1066",
+      "appDriverUid": "FLT-4036"
+    },
+    {
+      "name": "Noah Noel Patel",
+      "ptiDriverId": "PTI-1089",
+      "appDriverUid": "FLT-4073"
+    },
+    {
+      "name": "Isabel Wilson",
+      "ptiDriverId": "PTI-1011",
+      "appDriverUid": "FLT-4110"
+    },
+    {
+      "name": "Mateo Ortiz",
+      "ptiDriverId": "PTI-1034",
+      "appDriverUid": "FLT-4010"
+    },
+    {
+      "name": "Sam Marie Davis",
+      "ptiDriverId": "PTI-1057",
+      "appDriverUid": "FLT-4047"
+    },
+    {
+      "name": "Priya García",
+      "ptiDriverId": "PTI-1080",
+      "appDriverUid": "FLT-4084"
+    },
+    {
+      "name": "Lucas O’Connor",
+      "ptiDriverId": "PTI-1002",
+      "appDriverUid": "FLT-4121"
+    }
+  ],
+  "ptiOnly": [
+    {
+      "name": "Chris Rae Santos",
+      "ptiDriverId": "PTI-1025"
+    },
+    {
+      "name": "Rosa Mendoza",
+      "ptiDriverId": "PTI-1048"
+    },
+    {
+      "name": "Andre Lee",
+      "ptiDriverId": "PTI-1071"
+    },
+    {
+      "name": "Maya Jules Rivera",
+      "ptiDriverId": "PTI-1094"
+    },
+    {
+      "name": "Jordan Reyes",
+      "ptiDriverId": "PTI-1016"
+    },
+    {
+      "name": "Ana Parker",
+      "ptiDriverId": "PTI-1039"
+    }
+  ],
+  "fleetOnly": [
+    {
+      "name": "Malik Kai Harris",
+      "appDriverUid": "FLT-4106"
+    },
+    {
+      "name": "Sofia Bennett",
+      "appDriverUid": "FLT-4006"
+    },
+    {
+      "name": "Darius Nguyen",
+      "appDriverUid": "FLT-4043"
+    },
+    {
+      "name": "Elena Lee Flores",
+      "appDriverUid": "FLT-4080"
+    },
+    {
+      "name": "Noah Brooks",
+      "appDriverUid": "FLT-4117"
+    },
+    {
+      "name": "Isabel Clark",
+      "appDriverUid": "FLT-4017"
+    }
+  ],
+  "deliberatelyAmbiguous": [
+    {
+      "name": "Chris Johnson",
+      "ptiDriverId": "PTI-1097",
+      "appDriverUid": "FLT-4070"
+    },
+    {
+      "name": "Chris Johnson",
+      "ptiDriverId": "PTI-1019",
+      "appDriverUid": "FLT-4107"
+    }
+  ]
+}

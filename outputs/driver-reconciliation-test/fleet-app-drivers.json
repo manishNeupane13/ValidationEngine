@@ -1,0 +1,657 @@
+{
+  "source": "Synthetic Fleet App",
+  "totalCount": 50,
+  "data": {
+    "drivers": [
+      {
+        "appDriverUid": "FLT-4003",
+        "displayName": "Sam Reyes",
+        "mobile": "469-555-0125",
+        "licenseNumber": null,
+        "vehicle": {
+          "unitNumber": "UNIT-096",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4006",
+        "displayName": "Sofia Bennett",
+        "mobile": "303.555.0151",
+        "licenseNumber": "tst000172",
+        "vehicle": {
+          "unitNumber": "UNIT-091",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4007",
+        "displayName": "ANDRE NOEL RUIZ",
+        "mobile": "602-555-0114",
+        "licenseNumber": "TST-000135",
+        "vehicle": {
+          "unitNumber": "UNIT-085",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4010",
+        "displayName": "Mateo Ortiz",
+        "mobile": 3125550140,
+        "licenseNumber": " TST 000161 ",
+        "vehicle": {
+          "unitNumber": "UNIT-080",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4011",
+        "displayName": "Sofia Parker",
+        "mobile": "303.555.0103",
+        "licenseNumber": "tst000124",
+        "vehicle": {
+          "unitNumber": "UNIT-074",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4014",
+        "displayName": "ROSA LEE NGUYEN",
+        "mobile": "469-555-0129",
+        "licenseNumber": "TST-000150",
+        "vehicle": {
+          "unitNumber": "UNIT-100",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4099",
+          "displayName": "Sofia Johnson"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4017",
+        "displayName": "Clark, Isabel",
+        "mobile": "303.555.0155",
+        "licenseNumber": "tst000176",
+        "vehicle": {
+          "unitNumber": "UNIT-095",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4018",
+        "displayName": "Malik Davis",
+        "mobile": "602-555-0118",
+        "licenseNumber": "TST-000193",
+        "vehicle": {
+          "unitNumber": "UNIT-089",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4022",
+        "displayName": "Isabel",
+        "mobile": "303.555.0107",
+        "licenseNumber": "tst000128",
+        "vehicle": {
+          "unitNumber": "UNIT-078",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4025",
+        "displayName": "Ana Carter",
+        "mobile": "469-555-0133",
+        "licenseNumber": "TST-000154",
+        "vehicle": {
+          "unitNumber": "UNIT-073",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4029",
+        "displayName": "Noah Mendoza",
+        "mobile": "602-555-0122",
+        "licenseNumber": "TST-000143",
+        "vehicle": {
+          "unitNumber": "UNIT-093",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4033",
+        "displayName": "Lucas Wright",
+        "mobile": "+1 303 555 0111",
+        "licenseNumber": "tst000132",
+        "vehicle": {
+          "unitNumber": "UNIT-082",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4118",
+          "displayName": "Ana Ortiz"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4036",
+        "displayName": "Elena Ruiz",
+        "mobile": "469-555-0137",
+        "licenseNumber": "TST-000158",
+        "vehicle": {
+          "unitNumber": "UNIT-077",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4037",
+        "displayName": "Jordan Lee",
+        "mobile": 3125550100,
+        "licenseNumber": " TST 000121 ",
+        "vehicle": {
+          "unitNumber": "UNIT-071",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4040",
+        "displayName": "Priya Parker",
+        "mobile": "602-555-0126",
+        "licenseNumber": "TST-000147",
+        "vehicle": {
+          "unitNumber": "UNIT-097",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4043",
+        "displayName": "Darius Nguyen",
+        "mobile": 3125550152,
+        "licenseNumber": " TST 000173 ",
+        "vehicle": {
+          "unitNumber": "UNIT-092",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4044",
+        "displayName": "Maya Patel",
+        "mobile": "303.555.0115",
+        "licenseNumber": "tst000136",
+        "vehicle": {
+          "unitNumber": "UNIT-086",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4047",
+        "displayName": "Davis, Sam Marie",
+        "mobile": "469-555-0141",
+        "licenseNumber": "TST-000162",
+        "vehicle": {
+          "unitNumber": "UNIT-081",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4011",
+          "displayName": "Sofia Parker"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4048",
+        "displayName": "DARIUS HARRIS",
+        "mobile": 3125550104,
+        "licenseNumber": " TST 000125 ",
+        "vehicle": {
+          "unitNumber": "UNIT-075",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4051",
+        "displayName": "Andre Flores",
+        "mobile": "602-555-0130",
+        "licenseNumber": "TST-000151",
+        "vehicle": {
+          "unitNumber": "UNIT-070",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4055",
+        "displayName": "SOFIA GARCÍA",
+        "mobile": "303.555.0119",
+        "licenseNumber": "tst000140",
+        "vehicle": {
+          "unitNumber": "UNIT-090",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4059",
+        "displayName": "Mateo Brooks",
+        "mobile": "3125550103",
+        "licenseNumber": " TST 000129 ",
+        "vehicle": {
+          "unitNumber": "UNIT-079",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4062",
+        "displayName": "Wright, Malik",
+        "mobile": "602-555-0134",
+        "licenseNumber": "TST-000155",
+        "vehicle": {
+          "unitNumber": "UNIT-074",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4066",
+        "displayName": "Isabel Lee",
+        "mobile": "+1 303 555 0123",
+        "licenseNumber": "tst000144",
+        "vehicle": {
+          "unitNumber": "UNIT-094",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4014",
+          "displayName": "ROSA LEE NGUYEN"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4070",
+        "displayName": "Chris Johnson",
+        "mobile": 3125550112,
+        "licenseNumber": " TST 000133 ",
+        "vehicle": {
+          "unitNumber": "UNIT-083",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4073",
+        "displayName": "Noah Patel",
+        "mobile": "602-555-0138",
+        "licenseNumber": "TST-159",
+        "vehicle": {
+          "unitNumber": "UNIT-078",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4074",
+        "displayName": "Ana Rivera",
+        "mobile": "469-555-0101",
+        "licenseNumber": "TST-000122",
+        "vehicle": {
+          "unitNumber": "UNIT-072",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4077",
+        "displayName": "Harris, Lucas",
+        "mobile": "303.555.0127",
+        "licenseNumber": "TST-148",
+        "vehicle": {
+          "unitNumber": "UNIT-098",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4080",
+        "displayName": "Elena Flores",
+        "mobile": "469-555-0153",
+        "licenseNumber": "TST-000174",
+        "vehicle": {
+          "unitNumber": "UNIT-093",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4044",
+          "displayName": "Maya Patel"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4081",
+        "displayName": "  Jordan Wilson 🚚  ",
+        "mobile": 3125550116,
+        "licenseNumber": " TST 000137 ",
+        "vehicle": {
+          "unitNumber": "UNIT-087",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4084",
+        "displayName": "Priya García",
+        "mobile": "602-555-0142",
+        "licenseNumber": "TST-000163",
+        "vehicle": {
+          "unitNumber": "UNIT-082",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4085",
+        "displayName": "Elena Bennett",
+        "mobile": "469-555-0105",
+        "licenseNumber": "TST-000126",
+        "vehicle": {
+          "unitNumber": "UNIT-076",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4033",
+          "displayName": "Lucas Wright"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4088",
+        "displayName": "Maya Brooks",
+        "mobile": "303.555.0131",
+        "licenseNumber": "tst000152",
+        "vehicle": {
+          "unitNumber": "UNIT-071",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4092",
+        "displayName": "O’Connor, Darius Rae",
+        "mobile": 3125550120,
+        "licenseNumber": " TST 000141 ",
+        "vehicle": {
+          "unitNumber": "UNIT-091",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4096",
+        "displayName": "Sam Clakr",
+        "mobile": "469-555-0109",
+        "licenseNumber": "TST-000130",
+        "vehicle": {
+          "unitNumber": "UNIT-080",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4099",
+        "displayName": "Sofia Johnson",
+        "mobile": "+1 303 555 0135",
+        "licenseNumber": "tst000156",
+        "vehicle": {
+          "unitNumber": "UNIT-075",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4047",
+          "displayName": "Davis, Sam Marie"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4103",
+        "displayName": "MATEO RIVERA",
+        "mobile": 3125550124,
+        "licenseNumber": " TST 000145 ",
+        "vehicle": {
+          "unitNumber": "UNIT-095",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4106",
+        "displayName": "Malik Harris",
+        "mobile": "602-555-0150",
+        "licenseNumber": "TST-000171",
+        "vehicle": {
+          "unitNumber": "UNIT-090",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4107",
+        "displayName": "Johnson, Chris",
+        "mobile": "3125550112",
+        "licenseNumber": "TST-000134",
+        "vehicle": {
+          "unitNumber": "UNIT-084",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2022
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4110",
+        "displayName": "ISABEL WILSON",
+        "mobile": "303.555.0139",
+        "licenseNumber": "tst000160",
+        "vehicle": {
+          "unitNumber": "UNIT-079",
+          "make": "Freightliner",
+          "model": "Cascadia",
+          "modelYear": 2024
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4111",
+        "displayName": "Malik Reyes",
+        "mobile": "602-555-0102",
+        "licenseNumber": "TST-000123",
+        "vehicle": {
+          "unitNumber": "UNIT-073",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2023
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4114",
+        "displayName": "Chris Bennett",
+        "mobile": null,
+        "licenseNumber": " TST 000149 ",
+        "vehicle": {
+          "unitNumber": "UNIT-099",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2025
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4117",
+        "displayName": "NOAH BROOKS",
+        "mobile": "602-555-0154",
+        "licenseNumber": "TST-000175",
+        "vehicle": null,
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4118",
+        "displayName": "Ana Ortiz",
+        "mobile": "469-555-0117",
+        "licenseNumber": "TST-000138",
+        "vehicle": {
+          "unitNumber": "UNIT-088",
+          "make": "Kenworth",
+          "model": "T680",
+          "modelYear": 2020
+        },
+        "coDriver": {
+          "appDriverUid": "FLT-4066",
+          "displayName": "Isabel Lee"
+        }
+      },
+      {
+        "appDriverUid": "FLT-4121",
+        "displayName": "Lucas O’Connor",
+        "mobile": "303.555.0143",
+        "licenseNumber": "tst000164",
+        "vehicle": null,
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4122",
+        "displayName": "Nguyen, Noah",
+        "mobile": null,
+        "licenseNumber": "TST-000127",
+        "vehicle": {
+          "unitNumber": "UNIT-077",
+          "make": "International",
+          "model": "LT",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4125",
+        "displayName": "Jordan  clark",
+        "mobile": 3125550132,
+        "licenseNumber": " TST 000153 ",
+        "vehicle": null,
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4129",
+        "displayName": null,
+        "mobile": "469-555-0121",
+        "licenseNumber": "TST-000142",
+        "vehicle": null,
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4133",
+        "displayName": "Priya Carter",
+        "mobile": "602-555-0110",
+        "licenseNumber": null,
+        "vehicle": null,
+        "coDriver": null
+      },
+      {
+        "appDriverUid": "FLT-4136",
+        "displayName": "Darius Khan",
+        "mobile": "3125550131",
+        "licenseNumber": " TST 000157 ",
+        "vehicle": {
+          "unitNumber": "UNIT-076",
+          "make": "Volvo",
+          "model": "VNL",
+          "modelYear": 2021
+        },
+        "coDriver": null
+      }
+    ]
+  }
+}

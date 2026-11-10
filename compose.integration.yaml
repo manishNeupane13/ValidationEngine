@@ -1,0 +1,25 @@
+services:
+  integration-api:
+    build: .
+    command: ["integration-api"]
+    environment:
+      INTEGRATION_HOST: 0.0.0.0
+      INTEGRATION_DATA_DIR: /data/integration
+      INTEGRATION_HTTP_ALLOWED_HOSTS: ${INTEGRATION_HTTP_ALLOWED_HOSTS:-}
+      INTEGRATION_HTTP_TOKEN_FLEET: ${INTEGRATION_HTTP_TOKEN_FLEET:-}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - integration-data:/data
+  integration-ui:
+    build: .
+    command: ["streamlit", "run", "frontend/app.py", "--server.address=0.0.0.0"]
+    environment:
+      INTEGRATION_API_URL: http://integration-api:8000
+      INTEGRATION_WEBHOOK_BASE_URL: ${INTEGRATION_WEBHOOK_BASE_URL:-http://127.0.0.1:8000}
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      - integration-api
+volumes:
+  integration-data:

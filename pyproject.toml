@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "samsara-poller"
+version = "0.1.0"
+description = "Resilient scheduled polling service for Samsara vehicle data"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.27,<1", "pydantic>=2.7,<3", "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1", "python-multipart>=0.0.18,<1", "polars>=1.20,<2",
+    "duckdb>=1.2,<2", "pyarrow>=19,<25", "rapidfuzz>=3.10,<4",
+    "streamlit>=1.42,<2", "openpyxl>=3.1.5,<4", "python-dateutil>=2.9,<3",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-asyncio>=0.23", "ruff>=0.5"]
+
+[project.scripts]
+samsara-poller = "samsara_poller.main:run"
+integration-api = "data_integration.api:run"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"

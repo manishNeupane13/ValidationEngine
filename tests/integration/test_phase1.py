@@ -588,8 +588,9 @@ def test_find_searches_latest_sources_and_can_scope_to_an_old_version(client):
     assert client.post("/find", json={"text": "   "}).status_code == 422
 
 
+@pytest.mark.parametrize("auth_mode", ["bearer", "header", "query"])
 def test_get_connector_imports_original_filename_and_records_origin(
-    client, monkeypatch
+    client, monkeypatch, auth_mode
 ):
     from contextlib import contextmanager
 
@@ -600,7 +601,15 @@ def test_get_connector_imports_original_filename_and_records_origin(
 
     def upstream(request):
         assert request.method == "GET"
-        assert request.headers["authorization"] == "Bearer fake-bearer"
+        if auth_mode == "bearer":
+            assert request.headers["authorization"] == "Bearer fake-bearer"
+        elif auth_mode == "header":
+            assert request.headers["x-api-key"] == "fake-bearer"
+        else:
+            assert request.url.params["api_key"] == "fake-bearer"
+        assert request.url.params["page"] == "1"
+        assert request.url.params["limit"] == "25"
+        assert request.url.params.get_list("types") == ["speed", "location"]
         return httpx.Response(
             200,
             headers={"content-disposition": 'attachment; filename="fleet-export.json"'},
@@ -636,8 +645,19 @@ def test_get_connector_imports_original_filename_and_records_origin(
             "kind": "http",
             "connection_settings": {
                 "url": "https://fleet.example.test/export?page=1",
+                "query_params": {"limit": 25, "types": ["speed", "location"]},
                 "records_path": "/data/drivers",
-                "bearer_env": "INTEGRATION_HTTP_TOKEN_FLEET",
+                **(
+                    {"bearer_env": "INTEGRATION_HTTP_TOKEN_FLEET"}
+                    if auth_mode == "bearer"
+                    else {
+                        "custom_token": {
+                            "location": auth_mode,
+                            "name": "X-API-Key" if auth_mode == "header" else "api_key",
+                            "token_env": "INTEGRATION_HTTP_TOKEN_FLEET",
+                        }
+                    }
+                ),
             },
         },
     )

@@ -112,11 +112,11 @@ def create_app(data_dir=None):
                 settings = ConnectionSettings.model_validate(body.connection_settings)
             except ValidationError as error:
                 raise InputError(
-                    "Invalid connection settings. Check the URL, filename, and bearer environment variable name."
+                    "Invalid connection settings. Check the URL, filename, and authentication settings."
                 ) from error
             if body.kind == "http":
                 approved_url(settings.url)
-            elif settings.url or settings.bearer_env:
+            elif settings.url or settings.bearer_env or settings.custom_token:
                 raise InputError("Webhook sources receive data at a generated URL.")
             if settings.filename and (
                 original_filename(settings.filename) != settings.filename

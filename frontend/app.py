@@ -43,6 +43,7 @@ NAVIGATION = {
         "Upload data": "upload",
         "Create source": "create_source",
         "API & Webhook": "connect_source",
+        "Source dashboard": "source_dashboard",
         "Import history": "import_history",
     },
     "Find": {"Find records": "find"},
@@ -113,6 +114,7 @@ TASK_DETAILS = {
     "upload": "Upload Excel, CSV, JSON, or Parquet into an existing source.",
     "create_source": "Name a recurring file feed and configure how it will be refreshed.",
     "connect_source": "Fetch a file with HTTP GET or receive JSON from another system.",
+    "source_dashboard": "Review imports, dataset versions, and records for each source or API endpoint.",
     "import_history": "See which dataset versions were imported and when.",
     "explorer": "Preview dataset rows and inspect source metadata.",
     "profiling": "Measure blanks, repeated values, types, and patterns in selected columns.",
@@ -1378,6 +1380,69 @@ def display_transformation(run):
         st.success(f"Published {output['filename']}. Select it in Join & Reconcile.")
 
 
+def source_dashboard():
+    st.header("Source dashboard")
+    sources = all_items("/sources")
+    if not sources:
+        st.info("Create a source to start tracking its imports.")
+        return
+    source = st.selectbox(
+        "Source or API endpoint", sources, format_func=lambda item: item["name"]
+    )
+    source_id = source["id"]
+    versions = [item for item in datasets if item["source_id"] == source_id]
+    if source["kind"] == "http":
+        settings = source["connection_settings"]
+        st.caption("HTTP GET · " + settings["url"].split("?", 1)[0])
+        if params := settings.get("query_params"):
+            with st.expander("Request parameters"):
+                st.json(params)
+        if st.button("Run GET and refresh dashboard", type="primary"):
+            api("POST", f"/sources/{source_id}/refresh")
+            st.session_state.pop(f"dashboard-version-{source_id}", None)
+            st.rerun()
+    if versions:
+        ids = [item["id"] for item in versions]
+        selected = st.selectbox(
+            "Dataset version",
+            ids,
+            format_func=label,
+            key=f"dashboard-version-{source_id}",
+        )
+        current = by_id[selected]
+        a, b, c = st.columns(3)
+        a.metric("Rows", current["row_count"])
+        b.metric("Columns", len(current["schema"]))
+        c.metric("Versions", len(versions))
+        st.caption(f"{current['filename']} · Imported {current['created_at']}")
+        if len(versions) > 1:
+            with st.expander("Row counts by version"):
+                st.line_chart(
+                    [
+                        {"Imported": item["created_at"], "Rows": item["row_count"]}
+                        for item in reversed(versions)
+                    ],
+                    x="Imported",
+                    y="Rows",
+                )
+        st.subheader("Data preview")
+        offset = st.number_input(
+            "Skip rows", min_value=0, step=50, key=f"dashboard-offset-{selected}"
+        )
+        result = api(
+            "GET",
+            f"/datasets/{selected}/preview",
+            params={"limit": 50, "offset": offset},
+        )
+        st.dataframe(result["items"], hide_index=True)
+        with st.expander("Schema and provenance"):
+            st.json(current)
+    else:
+        st.info("This source has no imported versions yet.")
+    with st.expander("Import history"):
+        st.dataframe(all_items(f"/sources/{source_id}/history"), hide_index=True)
+
+
 def connection_workspace():
     st.header("API & Webhook")
     transport = st.radio("Connection type", ["HTTP GET", "Webhook"], horizontal=True)
@@ -1426,10 +1491,29 @@ def connection_workspace():
             if kind == "http"
             else ""
         )
-        env_name = (
-            st.text_input(
-                "Bearer token environment variable (optional)",
+        auth_mode = "None"
+        env_name = ""
+        token_name = ""
+        if kind == "http":
+            auth_mode = st.selectbox(
+                "Authentication",
+                ["None", "Bearer token", "Custom header", "Query parameter"],
+            )
+            env_name = st.text_input(
+                "Token environment variable",
                 placeholder="INTEGRATION_HTTP_TOKEN_FLEET",
+                help="Required for token authentication. Enter the variable name.",
+            )
+            token_name = st.text_input(
+                "Custom header or query parameter name",
+                placeholder="X-API-Key or api_key",
+                help="Fill this in for Custom header or Query parameter.",
+            )
+        query_text = (
+            st.text_area(
+                "Query parameters (JSON object, optional)",
+                placeholder='{"limit": 100, "types": ["speed", "location"]}',
+                help="Use ordinary request parameters here. Store credentials in a server environment variable.",
             )
             if kind == "http"
             else ""
@@ -1451,12 +1535,40 @@ def connection_workspace():
                 key: value.strip()
                 for key, value in {
                     "url": url,
-                    "bearer_env": env_name,
                     "filename": filename,
                     "records_path": records,
                 }.items()
                 if value.strip()
             }
+            if auth_mode != "None":
+                if not env_name.strip():
+                    st.error("Enter the server environment variable for the token.")
+                    st.stop()
+                if auth_mode == "Bearer token":
+                    configuration["bearer_env"] = env_name.strip()
+                else:
+                    if not token_name.strip():
+                        st.error(
+                            "Enter the header or query parameter name required by the API."
+                        )
+                        st.stop()
+                    configuration["custom_token"] = {
+                        "location": "header"
+                        if auth_mode == "Custom header"
+                        else "query",
+                        "name": token_name.strip(),
+                        "token_env": env_name.strip(),
+                    }
+            if query_text.strip():
+                try:
+                    parameters = json.loads(query_text)
+                except json.JSONDecodeError:
+                    st.error("Enter query parameters as a valid JSON object.")
+                    st.stop()
+                if not isinstance(parameters, dict):
+                    st.error("Query parameters must be a JSON object.")
+                    st.stop()
+                configuration["query_params"] = parameters
             created = api(
                 "POST",
                 "/sources",
@@ -1473,7 +1585,9 @@ def connection_workspace():
             st.rerun()
 
 
-if page == "connect_source":
+if page == "source_dashboard":
+    source_dashboard()
+elif page == "connect_source":
     connection_workspace()
 elif page == "create_source":
     st.header("Create a source")

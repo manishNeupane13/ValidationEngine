@@ -5,21 +5,60 @@ import os
 import re
 from email.message import Message
 from pathlib import PurePosixPath
+from typing import Literal
 from urllib.parse import unquote, urlsplit, urlunsplit
 
 import httpx
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from .engine import InputError
 
 SUPPORTED = {".json", ".csv", ".xlsx", ".parquet"}
 
 
+class CustomToken(BaseModel):
+    location: Literal["header", "query"]
+    name: str = Field(pattern=r"^[A-Za-z0-9_.~-]+$", max_length=128)
+    token_env: str = Field(pattern=r"^INTEGRATION_HTTP_TOKEN_[A-Z0-9_]+$")
+
+    @model_validator(mode="after")
+    def validate_header(self):
+        reserved = {
+            "host",
+            "connection",
+            "content-length",
+            "transfer-encoding",
+            "upgrade",
+            "te",
+            "trailer",
+            "accept-encoding",
+            "expect",
+        }
+        name = self.name.lower()
+        if self.location == "header" and (
+            name in reserved or name.startswith("proxy-")
+        ):
+            raise ValueError(
+                "Choose an authentication header rather than an HTTP control header."
+            )
+        return self
+
+
 class ConnectionSettings(BaseModel):
     url: str | None = Field(None, max_length=4000)
     records_path: str | None = Field(None, max_length=1000)
     filename: str | None = Field(None, max_length=200)
+    query_params: dict[str, str | int | float | bool | list[str]] = Field(
+        default_factory=dict
+    )
     bearer_env: str | None = Field(None, pattern=r"^INTEGRATION_HTTP_TOKEN_[A-Z0-9_]+$")
+    custom_token: CustomToken | None = None
+
+    @model_validator(mode="after")
+    def validate_auth(self):
+        if self.bearer_env and self.custom_token:
+            raise ValueError("Choose one authentication method.")
+        return self
 
 
 def upload_limit():
@@ -73,6 +112,8 @@ def token_digest(token):
 
 def get_payload(settings):
     destination, origin = approved_url(settings.url)
+    if settings.query_params:
+        destination = destination.copy_merge_params(settings.query_params)
     headers = {"Accept-Encoding": "identity"}
     if settings.bearer_env:
         token = os.environ.get(settings.bearer_env)
@@ -81,6 +122,18 @@ def get_payload(settings):
                 "The configured bearer token environment variable is empty."
             )
         headers["Authorization"] = f"Bearer {token}"
+    if auth := settings.custom_token:
+        token = os.environ.get(auth.token_env)
+        if not token:
+            raise InputError("The configured token environment variable is empty.")
+        if auth.location == "header":
+            if any(not 32 <= ord(character) <= 126 for character in token):
+                raise InputError(
+                    "The token environment variable contains invalid header characters."
+                )
+            headers[auth.name] = token
+        else:
+            destination = destination.copy_merge_params({auth.name: token})
     limit = upload_limit()
     payload = bytearray()
     with httpx.stream(

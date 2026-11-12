@@ -41,9 +41,52 @@ def read_file(payload, filename, sheet=None, records_path=None):
                 raise InputError("Use a JSON Pointer such as /data/items.")
             for part in records_path[1:].split("/"):
                 key = part.replace("~1", "/").replace("~0", "~")
-                if not isinstance(records, dict) or key not in records:
+                if isinstance(records, dict) and key in records:
+                    records = records[key]
+                elif (
+                    isinstance(records, list)
+                    and key.isascii()
+                    and key.isdecimal()
+                    and len(key) < 10
+                    and int(key) < len(records)
+                ):
+                    records = records[int(key)]
+                else:
                     raise InputError(f"JSON records path was not found: {records_path}")
-                records = records[key]
+        if (
+            isinstance(records, list)
+            and records
+            and all(isinstance(row, list) for row in records)
+        ):
+            headers, *rows = records
+            if not headers or any(
+                not isinstance(name, str) or not name.strip() for name in headers
+            ):
+                raise InputError(
+                    "Use a range whose first row contains nonempty text column names."
+                )
+            if len(set(headers)) != len(headers):
+                raise InputError("Spreadsheet column names must be unique.")
+            if any(len(row) > len(headers) for row in rows):
+                raise InputError("A data row has more cells than the header row.")
+            return (
+                pl.from_dicts(
+                    [
+                        dict(
+                            zip(
+                                headers,
+                                row + [None] * (len(headers) - len(row)),
+                                strict=True,
+                            )
+                        )
+                        for row in rows
+                    ],
+                    infer_schema_length=None,
+                    strict=False,
+                )
+                if rows
+                else pl.DataFrame(schema={header: pl.String for header in headers})
+            )
         if isinstance(records, dict):
             records = [records]
         if not isinstance(records, list) or any(

@@ -208,7 +208,8 @@ def create_app(data_dir=None):
                 else "Could not reach the configured API."
             )
             raise HTTPException(502, detail) from error
-        origin = {"transport": "http_get", "endpoint": endpoint, "filename": filename}
+        transport = "monday_graphql" if settings.monday_board_id else "http_get"
+        origin = {"transport": transport, "endpoint": endpoint, "filename": filename}
         if response_filename:
             origin["response_filename"] = response_filename
         return ingest_connected(source, payload, filename, origin)

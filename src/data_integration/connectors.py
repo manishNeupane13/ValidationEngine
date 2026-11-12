@@ -1,6 +1,7 @@
 """Read data from administrator-approved HTTPS endpoints and authenticated webhooks."""
 
 import hashlib
+import json
 import os
 import re
 from email.message import Message
@@ -12,6 +13,8 @@ import httpx
 from pydantic import BaseModel, Field, model_validator
 
 from .engine import InputError
+
+MONDAY_URL = "https://api.monday.com/v2"
 
 SUPPORTED = {".json", ".csv", ".xlsx", ".parquet"}
 
@@ -45,6 +48,7 @@ class CustomToken(BaseModel):
 
 
 class ConnectionSettings(BaseModel):
+    monday_board_id: str | None = Field(None, pattern=r"^[0-9]{1,20}$")
     url: str | None = Field(None, max_length=4000)
     records_path: str | None = Field(None, max_length=1000)
     filename: str | None = Field(None, max_length=200)
@@ -58,6 +62,21 @@ class ConnectionSettings(BaseModel):
     def validate_auth(self):
         if self.bearer_env and self.custom_token:
             raise ValueError("Choose one authentication method.")
+        if self.monday_board_id:
+            if (
+                self.url != MONDAY_URL
+                or not self.custom_token
+                or (
+                    self.custom_token.location != "header"
+                    or self.custom_token.name.lower() != "authorization"
+                )
+                or self.query_params
+            ):
+                raise ValueError(
+                    "Use the monday.com endpoint and an Authorization token for a board connection."
+                )
+            self.records_path = "/data/boards/0/items_page/items"
+            self.filename = f"monday-board-{self.monday_board_id}.json"
         return self
 
 
@@ -136,13 +155,22 @@ def get_payload(settings):
             destination = destination.copy_merge_params({auth.name: token})
     limit = upload_limit()
     payload = bytearray()
+    method = "GET"
+    request_body = {}
+    if settings.monday_board_id:
+        method = "POST"
+        request_body["json"] = {
+            "query": "query BoardItems($board: [ID!]!) { boards(ids: $board) { items_page(limit: 500) { cursor items { id name column_values { id text } } } } }",
+            "variables": {"board": [settings.monday_board_id]},
+        }
     with httpx.stream(
-        "GET",
+        method,
         destination,
         headers=headers,
         timeout=20,
         follow_redirects=False,
         trust_env=False,
+        **request_body,
     ) as response:
         response.raise_for_status()
         disposition = Message()
@@ -161,4 +189,22 @@ def get_payload(settings):
             if len(payload) + len(chunk) > limit:
                 raise InputError("The response exceeds the configured upload limit.")
             payload.extend(chunk)
+    if settings.monday_board_id:
+        try:
+            result = json.loads(payload)
+            if result.get("errors"):
+                raise InputError(
+                    "monday.com rejected the board query. Check board access and the configured token."
+                )
+            result["data"]["boards"][0]["items_page"]["items"]
+        except (
+            TypeError,
+            KeyError,
+            IndexError,
+            AttributeError,
+            json.JSONDecodeError,
+        ) as error:
+            raise InputError(
+                "monday.com did not return the requested board."
+            ) from error
     return bytes(payload), filename, origin, response_name or None

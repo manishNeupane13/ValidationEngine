@@ -1393,11 +1393,12 @@ def source_dashboard():
     versions = [item for item in datasets if item["source_id"] == source_id]
     if source["kind"] == "http":
         settings = source["connection_settings"]
-        st.caption("HTTP GET · " + settings["url"].split("?", 1)[0])
+        method = "monday.com board" if settings.get("monday_board_id") else "HTTP GET"
+        st.caption(method + " · " + settings["url"].split("?", 1)[0])
         if params := settings.get("query_params"):
             with st.expander("Request parameters"):
                 st.json(params)
-        if st.button("Run GET and refresh dashboard", type="primary"):
+        if st.button("Import and refresh dashboard", type="primary"):
             api("POST", f"/sources/{source_id}/refresh")
             st.session_state.pop(f"dashboard-version-{source_id}", None)
             st.rerun()
@@ -1445,18 +1446,30 @@ def source_dashboard():
 
 def connection_workspace():
     st.header("API & Webhook")
-    transport = st.radio("Connection type", ["HTTP GET", "Webhook"], horizontal=True)
-    kind = "http" if transport == "HTTP GET" else "webhook"
-    saved = [source for source in all_items("/sources") if source["kind"] == kind]
+    transport = st.radio(
+        "Connection type", ["HTTP GET", "monday.com board", "Webhook"], horizontal=True
+    )
+    monday = transport == "monday.com board"
+    kind = "webhook" if transport == "Webhook" else "http"
+    saved = [
+        source
+        for source in all_items("/sources")
+        if source["kind"] == kind
+        and bool(source["connection_settings"].get("monday_board_id")) == monday
+    ]
     if saved:
         source = st.selectbox(
             "Saved connection", saved, format_func=lambda item: item["name"]
         )
         if kind == "http":
             st.caption(
-                "Run a GET request and import the response as a dataset version."
+                "Import the first page of active board items."
+                if monday
+                else "Run a GET request and import the response as a dataset version."
             )
-            if st.button("Run GET and import", type="primary"):
+            if st.button(
+                "Import board items" if monday else "Run GET and import", type="primary"
+            ):
                 result = api("POST", f"/sources/{source['id']}/refresh")
                 st.success(
                     f"{result['filename']} · {result['row_count']:,} rows imported."
@@ -1484,17 +1497,33 @@ def connection_workspace():
         st.form(f"connection-{kind}"),
     ):
         name = st.text_input("Source name")
-        url = (
-            st.text_input(
-                "HTTPS endpoint", placeholder="https://api.example.com/drivers"
+        board_id = st.text_input("Board ID") if monday else ""
+        if monday:
+            st.caption(
+                "Reads up to 500 active items. Allow api.monday.com on the API server."
             )
-            if kind == "http"
-            else ""
+        url = (
+            "https://api.monday.com/v2"
+            if monday
+            else (
+                st.text_input(
+                    "HTTPS endpoint", placeholder="https://api.example.com/drivers"
+                )
+                if kind == "http"
+                else ""
+            )
         )
         auth_mode = "None"
         env_name = ""
         token_name = ""
-        if kind == "http":
+        if monday:
+            env_name = st.text_input(
+                "Token environment variable",
+                placeholder="INTEGRATION_HTTP_TOKEN_MONDAY",
+            )
+            auth_mode = "Custom header"
+            token_name = "Authorization"
+        elif kind == "http":
             auth_mode = st.selectbox(
                 "Authentication",
                 ["None", "Bearer token", "Custom header", "Query parameter"],
@@ -1515,14 +1544,22 @@ def connection_workspace():
                 placeholder='{"limit": 100, "types": ["speed", "location"]}',
                 help="Use ordinary request parameters here. Store credentials in a server environment variable.",
             )
-            if kind == "http"
+            if kind == "http" and not monday
             else ""
         )
-        filename = st.text_input(
-            "Filename override (optional)", placeholder="drivers.json"
+        filename = (
+            ""
+            if monday
+            else st.text_input(
+                "Filename override (optional)", placeholder="drivers.json"
+            )
         )
-        records = st.text_input(
-            "JSON records path (optional)", placeholder="/data/drivers"
+        records = (
+            ""
+            if monday
+            else st.text_input(
+                "JSON records path (optional)", placeholder="/data/drivers"
+            )
         )
         if kind == "http":
             st.caption(
@@ -1540,6 +1577,11 @@ def connection_workspace():
                 }.items()
                 if value.strip()
             }
+            if monday:
+                if not board_id.strip():
+                    st.error("Enter the monday.com board ID.")
+                    st.stop()
+                configuration["monday_board_id"] = board_id.strip()
             if auth_mode != "None":
                 if not env_name.strip():
                     st.error("Enter the server environment variable for the token.")

@@ -755,3 +755,81 @@ def test_ordered_match_reports_conflicts_after_early_match(client):
         f"/reconciliation/runs/{run['id']}/report", params={"differences_only": True}
     ).json()
     assert report["items"] == [row]
+
+
+def test_json_spreadsheet_range_uses_first_row_as_headers(client):
+    result = upload(
+        client,
+        source(client),
+        b'{"values":[["Driver","Code"],["Ada","001"],["Ben"]]}',
+        "range.json",
+        records_path="/values",
+    )
+    assert result.status_code == 201, result.text
+    rows = client.get(f"/datasets/{result.json()['id']}/preview").json()["items"]
+    assert rows == [{"Driver": "Ada", "Code": "001"}, {"Driver": "Ben", "Code": None}]
+
+
+def test_monday_board_uses_graphql_post_and_imports_items(client, monkeypatch):
+    from contextlib import contextmanager
+
+    import httpx
+
+    monkeypatch.setenv("INTEGRATION_HTTP_ALLOWED_HOSTS", "api.monday.com")
+    monkeypatch.setenv("INTEGRATION_HTTP_TOKEN_MONDAY", "test-token")
+
+    def upstream(request):
+        assert request.method == "POST"
+        assert request.headers["authorization"] == "test-token"
+        body = json.loads(request.content)
+        assert body["variables"] == {"board": ["123"]}
+        assert body["query"].startswith("query BoardItems")
+        return httpx.Response(
+            200,
+            json={
+                "data": {
+                    "boards": [
+                        {
+                            "items_page": {
+                                "cursor": None,
+                                "items": [{"id": "1", "name": "Ada"}],
+                            }
+                        }
+                    ]
+                }
+            },
+        )
+
+    @contextmanager
+    def stream(method, url, **kwargs):
+        kwargs.pop("trust_env")
+        kwargs.pop("follow_redirects")
+        with (
+            httpx.Client(transport=httpx.MockTransport(upstream)) as remote,
+            remote.stream(method, url, **kwargs) as response,
+        ):
+            yield response
+
+    monkeypatch.setattr(httpx, "stream", stream)
+    result = client.post(
+        "/sources",
+        json={
+            "name": "Board",
+            "kind": "http",
+            "connection_settings": {
+                "url": "https://api.monday.com/v2",
+                "monday_board_id": "123",
+                "custom_token": {
+                    "location": "header",
+                    "name": "Authorization",
+                    "token_env": "INTEGRATION_HTTP_TOKEN_MONDAY",
+                },
+            },
+        },
+    )
+    assert result.status_code == 201, result.text
+    source_id = result.json()["id"]
+    dataset = client.post(f"/sources/{source_id}/refresh")
+    assert dataset.status_code == 201, dataset.text
+    assert dataset.json()["origin"]["transport"] == "monday_graphql"
+    assert dataset.json()["row_count"] == 1
